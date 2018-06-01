@@ -15,10 +15,14 @@
 @implementation Test
 - (void)method
 {
+    @autoreleasepool{
+    NSMutableArray *arr = [NSMutableArray array];
+    NSLog(@"%@",arr);
+    }
     
-    self.bb = [NSMutableArray array];
-    
-    [(NSMutableArray *)self.bb addObject:@"111"];
+//    self.bb = [NSMutableArray array];
+//
+//    [(NSMutableArray *)self.bb addObject:@"111"];
     
 //    self.aa = @"";
 //    self.bb = @[];

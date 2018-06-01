@@ -106,7 +106,7 @@ struct __AtAutoreleasePool {
 };
 
 #define __OFFSETOFIVAR__(TYPE, MEMBER) ((long long) &((TYPE *)0)->MEMBER)
-static __NSConstantStringImpl __NSConstantStringImpl__var_folders_cf_2w9p9n251x9b1gvcyt1p8tbw0000gp_T_Test_437451_mi_0 __attribute__ ((section ("__DATA, __cfstring"))) = {__CFConstantStringClassReference,0x000007c8,"",0};
+static __NSConstantStringImpl __NSConstantStringImpl__var_folders_cf_2w9p9n251x9b1gvcyt1p8tbw0000gp_T_Test_fb1412_mi_0 __attribute__ ((section ("__DATA, __cfstring"))) = {__CFConstantStringClassReference,0x000007c8,"%@",2};
 
 
 
@@ -97810,8 +97810,10 @@ struct Test_IMPL {
 // @implementation Test
 
 static void _I_Test_method(Test * self, SEL _cmd) {
-    ((void (*)(id, SEL, NSString *))(void *)objc_msgSend)((id)self, sel_registerName("setAa:"), (NSString *)&__NSConstantStringImpl__var_folders_cf_2w9p9n251x9b1gvcyt1p8tbw0000gp_T_Test_437451_mi_0);
-    ((void (*)(id, SEL, NSArray *))(void *)objc_msgSend)((id)self, sel_registerName("setBb:"), (NSArray *)((NSArray *(*)(Class, SEL, ObjectType  _Nonnull const __unsafe_unretained * _Nonnull, NSUInteger))(void *)objc_msgSend)(objc_getClass("NSArray"), sel_registerName("arrayWithObjects:count:"), (const id *)__NSContainer_literal(0U).arr, 0U));
+    /* @autoreleasepool */{ __AtAutoreleasePool __autoreleasepool; 
+    NSMutableArray *arr = ((NSMutableArray * _Nonnull (*)(id, SEL))(void *)objc_msgSend)((id)objc_getClass("NSMutableArray"), sel_registerName("array"));
+    NSLog((NSString *)&__NSConstantStringImpl__var_folders_cf_2w9p9n251x9b1gvcyt1p8tbw0000gp_T_Test_fb1412_mi_0,arr);
+    }
 }
 
 static NSString * _I_Test_aa(Test * self, SEL _cmd) { return (*(NSString *__strong *)((char *)self + OBJC_IVAR_$_Test$_aa)); }
