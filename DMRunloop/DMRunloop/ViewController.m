@@ -17,6 +17,10 @@
 //
 //@property (nonatomic, strong) NSTimer *timer;
 
+@property (nonatomic, copy) NSString *name;
+
+@property (nonatomic, strong) NSThread *thread;
+
 
 @end
 
@@ -29,59 +33,104 @@
 //}
 __weak id reference = nil;
 
+- (void)testDemo1
+{
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSLog(@"线程开始");
+        //获取到当前线程
+        self.thread = [NSThread currentThread];
+        NSRunLoop *runloop = [NSRunLoop currentRunLoop];
+        //添加一个Port，同理为了防止runloop没事干直接退出
+        [runloop addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
+
+        //运行一个runloop，[NSDate distantFuture]：很久很久以后才让它失效
+        [runloop runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+
+        NSLog(@"线程结束");
+    });
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //在我们开启的异步线程调用方法
+        [self performSelector:@selector(recieveMsg) onThread:self.thread withObject:nil waitUntilDone:NO];
+    });
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //在我们开启的异步线程调用方法
+        [self performSelector:@selector(recieveMsg) onThread:self.thread withObject:nil waitUntilDone:NO];
+    });
+}
+- (void)recieveMsg
+{
+//    @autoreleasepool{
+        NSLog(@"收到消息了，在这个线程：%@==%@",[NSThread currentThread],self.name);
+//    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self addObserverForRunloop];
     
-    @autoreleasepool{
-        NSString *string = [NSString stringWithFormat:@"hhh"];
-        reference = string;
-        NSLog(@"");
-    }
+    [self test1];
+//    [self testDemo1];
+//    [self addObserverForRunloop];
+//
+//    @autoreleasepool{
+//        NSString *string = [NSString stringWithFormat:@"hhh"];
+//        reference = string;
+//        NSLog(@"");
+//    }
+    
+//    NSThread *thread1 = [[NSThread alloc] init];
+//    self.thread = thread1;
+//    [self performSelector:@selector(threadCall) onThread:thread1 withObject:nil waitUntilDone:NO];
+//    [self performSelector:@selector(threadCall) withObject:nil afterDelay:0 inModes:@[NSDefaultRunLoopMode]];
+    
+    
+//     [self performSelector:@selector(threadCall) onThread:thread1 withObject:nil waitUntilDone:NO];
+//
+//    [thread1 start];
+//
+    
+//    NSThread *subThread = [[NSThread alloc] initWithTarget:self selector:@selector(threadCall) object:nil];
+//
+//
+//    [subThread start];
+    
+    
+}
+
+- (void)test1
+{
+//    self.thread = [[NSThread alloc] initWithBlock:^{
+//        [[NSRunLoop currentRunLoop] addPort:[NSPort port] forMode:NSDefaultRunLoopMode];
+//        [[NSRunLoop currentRunLoop] run];
+//    }];
+    NSThread *subThread = [[NSThread alloc] initWithTarget:self selector:@selector(startRunloop) object:nil];
+    self.thread = subThread;
+    [self.thread start];
+}
+
+- (void)startRunloop
+{
+    [[NSRunLoop currentRunLoop] addPort:[NSPort port] forMode:NSDefaultRunLoopMode];
+    [[NSRunLoop currentRunLoop] run];
+}
+
+
+- (void)threadCall
+{
+     NSLog(@"%@", [NSThread currentThread]);
+//    NSRunLoop *runloop = [NSRunLoop currentRunLoop];
+//    //添加一个Port，同理为了防止runloop没事干直接退出
+//    [runloop addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
+//
+//    //运行一个runloop，[NSDate distantFuture]：很久很久以后才让它失效
+//    [runloop runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan:touches withEvent:event];
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        CFRunLoopRunResult res = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 100, YES);
-        NSString *string = [NSString stringWithFormat:@"hhh"];
-        reference = string;
-        
-        NSLog(@"%@",reference);
-        
-        switch (res) {
-            case kCFRunLoopRunHandledSource:
-                NSLog(@"kCFRunLoopRunHandledSource");
-                break;
-            case kCFRunLoopRunFinished:
-                NSLog(@"kCFRunLoopRunFinished");
-                break;
-            default:
-                NSLog(@"other");
-                break;
-        }
-        
-        
-
-    });
-    
-    
-    
-    
-    
-//    CFRunLoopRef currentRunLoop = CFRunLoopGetCurrent();
-////    NSLog(@"touch currentRunLoop = %@",currentRunLoop);
-//    NSMutableArray *arr = [NSMutableArray array];
-//    // 场景 1
-////    NSString *string = nil;
-////    @autoreleasepool{
-//        NSString *string = [NSString stringWithFormat:@"leoliu"];
-//        reference = string;
-////    }
-
-//    NSLog(@"%@",reference);
+     [self performSelector:@selector(threadCall) onThread:self.thread withObject:nil waitUntilDone:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
