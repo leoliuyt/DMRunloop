@@ -64,3 +64,4 @@ iOSInjectionProject/
 IDEWorkspaceChecks.plist
 *.xcworkspacedata
 contents.xcworkspacedata
+.DS_Store
