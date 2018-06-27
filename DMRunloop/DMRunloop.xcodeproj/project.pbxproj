@@ -17,6 +17,7 @@
 		6BACEE2F20BCE6C400C80982 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6BACEE2D20BCE6C400C80982 /* LaunchScreen.storyboard */; };
 		6BACEE3220BCE6C400C80982 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BACEE3120BCE6C400C80982 /* main.m */; };
 		6BACEE3B20BCF21600C80982 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BACEE3A20BCF21600C80982 /* Test.m */; };
+		9EF80CD320E3C62D009DC426 /* RunloopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF80CD220E3C62D009DC426 /* RunloopViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,8 @@
 		6BACEE3920BCF21600C80982 /* Test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Test.h; sourceTree = "<group>"; };
 		6BACEE3A20BCF21600C80982 /* Test.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
 		6BACEE3C20BCF27300C80982 /* Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Test.cpp; sourceTree = "<group>"; };
+		9EF80CD120E3C62D009DC426 /* RunloopViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RunloopViewController.h; sourceTree = "<group>"; };
+		9EF80CD220E3C62D009DC426 /* RunloopViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RunloopViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +82,8 @@
 				6BA6C02020C235A900E0A581 /* TestViewController.m */,
 				6B0FF56220E322E600B487E5 /* DMAutoreleaseViewController.h */,
 				6B0FF56320E322E600B487E5 /* DMAutoreleaseViewController.m */,
+				9EF80CD120E3C62D009DC426 /* RunloopViewController.h */,
+				9EF80CD220E3C62D009DC426 /* RunloopViewController.m */,
 				6BA6C01B20C0E51500E0A581 /* Person.h */,
 				6BA6C01C20C0E51500E0A581 /* Person.m */,
 				6BACEE3920BCF21600C80982 /* Test.h */,
@@ -163,6 +168,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EF80CD320E3C62D009DC426 /* RunloopViewController.m in Sources */,
 				6BA6C02120C235A900E0A581 /* TestViewController.m in Sources */,
 				6BACEE2720BCE6C300C80982 /* ViewController.m in Sources */,
 				6BACEE3B20BCF21600C80982 /* Test.m in Sources */,

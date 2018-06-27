@@ -213,19 +213,4 @@ static void dm_ObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity
 //        CFRelease(observerRef);
 //    }
 //}
-//
-//
-//static void dm_ObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info){
-//    //kCFRunLoopBeforeWaiting 32
-//    //kCFRunLoopBeforeTimers 2
-//    NSLog(@"%tu----%@",activity,info);
-//}
-//
-//- (void)didReceiveMemoryWarning {
-//    [super didReceiveMemoryWarning];
-//    // Dispose of any resources that can be recreated.
-//}
-//
-
-
 @end
