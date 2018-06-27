@@ -31,7 +31,7 @@
 //     [self addObserverForRunloop];
 //    return [super initWithCoder:aDecoder];
 //}
-__weak id reference = nil;
+
 
 - (void)testDemo1
 {
@@ -68,16 +68,10 @@ __weak id reference = nil;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self test1];
+//    [self test1];
 //    [self testDemo1];
 //    [self addObserverForRunloop];
 //
-//    @autoreleasepool{
-//        NSString *string = [NSString stringWithFormat:@"hhh"];
-//        reference = string;
-//        NSLog(@"");
-//    }
     
 //    NSThread *thread1 = [[NSThread alloc] init];
 //    self.thread = thread1;
@@ -135,12 +129,11 @@ __weak id reference = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-//    NSLog(@"viewWillAppear:%@",reference);
+
 //    NSLog(@"%@",((Person *)reference).name);
 }
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-//    NSLog(@"viewDidAppear%@",reference);
 //    NSLog(@"%@",((Person *)reference).name);
 }
 
@@ -163,19 +156,19 @@ static void dm_ObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity
 //    kCFRunLoopExit = (1UL << 7),
 //    kCFRunLoopAllActivities = 0x0FFFFFFFU
     //0x14e283c0
-    if (activity == kCFRunLoopEntry) {
-        NSLog(@"kCFRunLoopEntry = %@",reference);
-    } else if(activity == kCFRunLoopBeforeTimers){
-        NSLog(@"kCFRunLoopBeforeTimers = %@",reference);
-    } else if(activity == kCFRunLoopBeforeSources){
-        NSLog(@"kCFRunLoopBeforeSources = %@",reference);
-    } else if(activity == kCFRunLoopBeforeWaiting){
-        NSLog(@"kCFRunLoopBeforeWaiting = %@",reference);
-    } else if(activity == kCFRunLoopAfterWaiting){
-        NSLog(@"kCFRunLoopAfterWaiting = %@",reference);
-    } else {
-        NSLog(@"kCFRunLoopExit = %@",reference);
-    }
+//    if (activity == kCFRunLoopEntry) {
+//        NSLog(@"kCFRunLoopEntry = %@",reference);
+//    } else if(activity == kCFRunLoopBeforeTimers){
+//        NSLog(@"kCFRunLoopBeforeTimers = %@",reference);
+//    } else if(activity == kCFRunLoopBeforeSources){
+//        NSLog(@"kCFRunLoopBeforeSources = %@",reference);
+//    } else if(activity == kCFRunLoopBeforeWaiting){
+//        NSLog(@"kCFRunLoopBeforeWaiting = %@",reference);
+//    } else if(activity == kCFRunLoopAfterWaiting){
+//        NSLog(@"kCFRunLoopAfterWaiting = %@",reference);
+//    } else {
+//        NSLog(@"kCFRunLoopExit = %@",reference);
+//    }
 }
 
 

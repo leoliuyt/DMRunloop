@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B0FF56420E322E600B487E5 /* DMAutoreleaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B0FF56320E322E600B487E5 /* DMAutoreleaseViewController.m */; };
 		6BA6C01D20C0E51500E0A581 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BA6C01C20C0E51500E0A581 /* Person.m */; };
 		6BA6C02120C235A900E0A581 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BA6C02020C235A900E0A581 /* TestViewController.m */; };
 		6BACEE2420BCE6C300C80982 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BACEE2320BCE6C300C80982 /* AppDelegate.m */; };
@@ -19,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6B0FF56220E322E600B487E5 /* DMAutoreleaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DMAutoreleaseViewController.h; sourceTree = "<group>"; };
+		6B0FF56320E322E600B487E5 /* DMAutoreleaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DMAutoreleaseViewController.m; sourceTree = "<group>"; };
 		6BA6C01B20C0E51500E0A581 /* Person.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
 		6BA6C01C20C0E51500E0A581 /* Person.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		6BA6C01F20C235A900E0A581 /* TestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
@@ -74,6 +77,8 @@
 				6BACEE2620BCE6C300C80982 /* ViewController.m */,
 				6BA6C01F20C235A900E0A581 /* TestViewController.h */,
 				6BA6C02020C235A900E0A581 /* TestViewController.m */,
+				6B0FF56220E322E600B487E5 /* DMAutoreleaseViewController.h */,
+				6B0FF56320E322E600B487E5 /* DMAutoreleaseViewController.m */,
 				6BA6C01B20C0E51500E0A581 /* Person.h */,
 				6BA6C01C20C0E51500E0A581 /* Person.m */,
 				6BACEE3920BCF21600C80982 /* Test.h */,
@@ -161,6 +166,7 @@
 				6BA6C02120C235A900E0A581 /* TestViewController.m in Sources */,
 				6BACEE2720BCE6C300C80982 /* ViewController.m in Sources */,
 				6BACEE3B20BCF21600C80982 /* Test.m in Sources */,
+				6B0FF56420E322E600B487E5 /* DMAutoreleaseViewController.m in Sources */,
 				6BA6C01D20C0E51500E0A581 /* Person.m in Sources */,
 				6BACEE3220BCE6C400C80982 /* main.m in Sources */,
 				6BACEE2420BCE6C300C80982 /* AppDelegate.m in Sources */,
@@ -306,7 +312,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XWNPFKK4U5;
 				INFOPLIST_FILE = DMRunloop/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -324,7 +330,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XWNPFKK4U5;
 				INFOPLIST_FILE = DMRunloop/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
