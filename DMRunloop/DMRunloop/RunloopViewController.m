@@ -34,7 +34,7 @@
 
 - (void)test1
 {
-    NSThread *subThread = [[NSThread alloc] initWithTarget:self selector:@selector(startRunloopSourceCustomMode) object:nil];
+    NSThread *subThread = [[NSThread alloc] initWithTarget:self selector:@selector(startRunloopTimerCustomMode) object:nil];
     self.thread = subThread;
     [self.thread start];
 }
@@ -122,7 +122,7 @@
     CFRunLoopAddObserver(CFRunLoopGetCurrent(), observer, mode);
 //    CFRunLoopRun();
 //    //10s后退出runloop
-    CFRunLoopRunInMode(mode, 10, YES);
+    CFRunLoopRunInMode(mode, 10, NO);
     CFRelease(observer);
     NSLog(@"Runloop finish");
 }
