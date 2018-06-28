@@ -16,11 +16,11 @@
 __weak id reference = nil;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSString *a = @"a"; // a的地址：0x10be1f340
-    NSString *b = [@"a" mutableCopy]; // b的地址：0x6080002542b0
-    NSString *c = [b copy];
+//    NSString *a = @"a"; // a的地址：0x10be1f340
+//    NSString *b = [@"a" mutableCopy]; // b的地址：0x6080002542b0
+//    NSString *c = [b copy];
     NSString *string = [NSString stringWithFormat:@"hhh"];
-    reference = b;
+    reference = string;
     NSLog(@"reference = %@",reference);
 }
 
