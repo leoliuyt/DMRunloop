@@ -29,12 +29,15 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan:touches withEvent:event];
-    [self performSelector:@selector(threadCall) onThread:self.thread withObject:nil waitUntilDone:NO];
+//    [self performSelector:@selector(threadCall) onThread:self.thread withObject:nil waitUntilDone:NO];
+//    [self performSelector:@selector(threadCall) withObject:nil afterDelay:0 inModes:@[UITrackingRunLoopMode]];
+    [self performSelector:@selector(threadCall) withObject:nil afterDelay:0 inModes:@[@"kDMCustomMode"]];
+//    [self performSelector:@selector(threadCall) withObject:nil afterDelay:0 inModes:@[NSDefaultRunLoopMode]];
 }
 
 - (void)test1
 {
-    NSThread *subThread = [[NSThread alloc] initWithTarget:self selector:@selector(startRunloopTimerCustomMode) object:nil];
+    NSThread *subThread = [[NSThread alloc] initWithTarget:self selector:@selector(startRunloopSourceCustomMode) object:nil];
     self.thread = subThread;
     [self.thread start];
 }
@@ -78,12 +81,11 @@
 - (void)startRunloopSourceCustomMode
 {
     CFRunLoopRef runLoop = CFRunLoopGetCurrent();
-    CFRunLoopSourceContext context = {0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+    CFRunLoopSourceContext context = {0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &myCFSourceCallback};
     CFRunLoopSourceRef source = CFRunLoopSourceCreate(kCFAllocatorDefault, 0, &context);
+    NSString *str = @"kDMCustomMode";
+    CFStringRef string = (__bridge CFStringRef)str;
     // 给runloop添加一个自定义source
-    CFRunLoopAddSource(CFRunLoopGetCurrent(), source, kCFRunLoopDefaultMode);
-    
-    CFStringRef string = CFStringCreateWithFormat(NULL, NULL, CFSTR("kDMCustomMode"));
     CFRunLoopAddSource(runLoop, source, string);
     [self addObserverForMode:string];
 }
@@ -120,9 +122,9 @@
         }
     });
     CFRunLoopAddObserver(CFRunLoopGetCurrent(), observer, mode);
-//    CFRunLoopRun();
+    CFRunLoopRun();
 //    //10s后退出runloop
-    CFRunLoopRunInMode(mode, 10, NO);
+//    CFRunLoopRunInMode(mode, 10, NO);
     CFRelease(observer);
     NSLog(@"Runloop finish");
 }
@@ -131,5 +133,11 @@ static void myCFTimerCallback(CFRunLoopTimerRef timer, void *info)
 {
     NSLog(@"timer====%@",[NSThread currentThread]);
 }
+
+static void myCFSourceCallback(void *info)
+{
+    NSLog(@"timer====%@",[NSThread currentThread]);
+}
+
 
 @end
