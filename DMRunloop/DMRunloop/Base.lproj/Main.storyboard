@@ -40,7 +40,10 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zEv-wj-Vvp">
                                         <rect key="frame" x="0.0" y="241" width="375" height="121"/>
-                                        <state key="normal" title="Button"/>
+                                        <state key="normal" title="Common Mode"/>
+                                        <connections>
+                                            <segue destination="45a-AG-VW1" kind="push" id="FIi-7R-ZOa"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hFa-rU-DGs">
                                         <rect key="frame" x="0.0" y="362" width="375" height="120.5"/>
@@ -67,6 +70,54 @@
             </objects>
             <point key="canvasLocation" x="778" y="133"/>
         </scene>
+        <!--Common View Controller-->
+        <scene sceneID="4GL-0k-tXC">
+            <objects>
+                <viewController id="45a-AG-VW1" customClass="DMCommonViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="8mM-E4-lLV"/>
+                        <viewControllerLayoutGuide type="bottom" id="bda-V8-uLM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="OpC-7X-ca7">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oMW-kd-vef">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="Cell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="XNt-rt-akU">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XNt-rt-akU" id="tFS-gP-zZe">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="45a-AG-VW1" id="TO7-l4-2PY"/>
+                                    <outlet property="delegate" destination="45a-AG-VW1" id="q0z-Ob-Do9"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="bda-V8-uLM" firstAttribute="top" secondItem="oMW-kd-vef" secondAttribute="bottom" id="8Lz-gx-GxF"/>
+                            <constraint firstAttribute="trailing" secondItem="oMW-kd-vef" secondAttribute="trailing" id="Mx0-Wi-Yn0"/>
+                            <constraint firstItem="oMW-kd-vef" firstAttribute="top" secondItem="8mM-E4-lLV" secondAttribute="bottom" id="sJ4-gH-mlF"/>
+                            <constraint firstItem="oMW-kd-vef" firstAttribute="leading" secondItem="OpC-7X-ca7" secondAttribute="leading" id="z57-xP-7Li"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="6Ja-Fd-DVE"/>
+                    <connections>
+                        <outlet property="tableView" destination="oMW-kd-vef" id="N7z-84-LaU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7bK-jn-ndX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1548" y="886"/>
+        </scene>
         <!--Runloop View Controller-->
         <scene sceneID="CMm-Ps-dwv">
             <objects>
@@ -84,7 +135,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f6z-2e-zJy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1548" y="475"/>
+            <point key="canvasLocation" x="1548" y="203"/>
         </scene>
         <!--Autorelease View Controller-->
         <scene sceneID="xxO-IF-nXO">
@@ -103,7 +154,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cOm-73-m6N" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1548" y="-197"/>
+            <point key="canvasLocation" x="1548" y="-449"/>
         </scene>
         <!--Test View Controller-->
         <scene sceneID="dN0-i5-2IW">

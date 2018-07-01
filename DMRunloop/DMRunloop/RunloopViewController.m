@@ -14,8 +14,10 @@ static NSString *kDMCustomMode = @"kDMCustomMode";
 @interface RunloopViewController ()
 {
     CFRunLoopRef threadRunloopRef;
+    CFRunLoopSourceRef sourceRef;
 }
 @property (nonatomic, strong) DMThread *thread;
+
 
 
 @end
@@ -33,24 +35,33 @@ static NSString *kDMCustomMode = @"kDMCustomMode";
 {
     NSLog(@"%s",__func__);
     [super touchesBegan:touches withEvent:event];
-//    [self performSelector:@selector(threadCall) onThread:self.thread withObject:nil waitUntilDone:NO];
+    [self performSelector:@selector(threadCall) onThread:self.thread withObject:nil waitUntilDone:NO];
 //    [self performSelector:@selector(threadCall) withObject:nil afterDelay:0 inModes:@[UITrackingRunLoopMode]];
 //    [self performSelector:@selector(threadCall) withObject:nil afterDelay:0 inModes:@[@"kDMCustomMode"]];
 //    [self performSelector:@selector(threadCall) withObject:nil afterDelay:0 inModes:@[NSDefaultRunLoopMode]];
     
     //waitUntilDone YES 时在thread被释放后 也通用要求一直等到threadCall 执行完毕，这样就会导致阻塞
-    [self performSelector:@selector(threadCall) onThread:self.thread withObject:nil waitUntilDone:NO modes:@[kDMCustomMode]];
+//    [self performSelector:@selector(threadCall) onThread:self.thread withObject:nil waitUntilDone:NO modes:@[kDMCustomMode]];
+    
 }
 
 - (void)test1
 {
-    self.thread = [[DMThread alloc] initWithTarget:self selector:@selector(startRunloopSourceCustomMode) object:nil];
+    self.thread = [[DMThread alloc] initWithTarget:self selector:@selector(startRunloopTimer) object:nil];
     [self.thread start];
 }
 
 - (void)threadCall
 {
     NSLog(@"call in %@==%@===%p", [NSThread currentThread],self.thread,self.thread);
+//    [self triggerSource];
+}
+
+//用于手动触发source0
+- (void)triggerSource
+{
+    CFRunLoopSourceSignal(sourceRef);
+    CFRunLoopWakeUp(CFRunLoopGetCurrent());
 }
 
 - (void)startRunloop
@@ -66,10 +77,32 @@ static NSString *kDMCustomMode = @"kDMCustomMode";
 
 - (void)startRunloopSource
 {
-    CFRunLoopSourceContext context = {0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
-    CFRunLoopSourceRef source = CFRunLoopSourceCreate(kCFAllocatorDefault, 0, &context);
+    CFRunLoopSourceContext context = {0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &myCFSourceCallback};
+//    CFIndex    version;
+//    void *    info;
+//    const void *(*retain)(const void *info);
+//    void    (*release)(const void *info);
+//    CFStringRef    (*copyDescription)(const void *info);
+//    Boolean    (*equal)(const void *info1, const void *info2);
+//    CFHashCode    (*hash)(const void *info);
+//    void    (*schedule)(void *info, CFRunLoopRef rl, CFRunLoopMode mode);
+//    void    (*cancel)(void *info, CFRunLoopRef rl, CFRunLoopMode mode);
+//    void    (*perform)(void *info);
+//    CFRunLoopSourceContext context = {
+//        0,
+//        NULL,
+//        &CFRetain,
+//        &CFRelease,
+//        NULL,
+//        NULL,
+//        NULL,
+//        NULL,
+//        NULL,
+//        &myCFSourceCallback
+//    };
+    sourceRef = CFRunLoopSourceCreate(kCFAllocatorDefault, 0, &context);
     // 给runloop添加一个自定义source
-    CFRunLoopAddSource(CFRunLoopGetCurrent(), source, kCFRunLoopDefaultMode);
+    CFRunLoopAddSource(CFRunLoopGetCurrent(), sourceRef, kCFRunLoopDefaultMode);
     [self addObserverForMode:kCFRunLoopDefaultMode];
 }
 
@@ -78,10 +111,14 @@ static NSString *kDMCustomMode = @"kDMCustomMode";
     CFRunLoopRef runLoop = CFRunLoopGetCurrent();
     CFRunLoopTimerContext context = {0, NULL, NULL, NULL, NULL};
     //每隔5s被唤醒一次
-    CFRunLoopTimerRef timer = CFRunLoopTimerCreate(kCFAllocatorDefault, 0.1, 15, 0, 0,
+    CFRunLoopTimerRef timer = CFRunLoopTimerCreate(kCFAllocatorDefault, 0.1, 1, 0, 0,
                                                    &myCFTimerCallback, &context);
-    CFRunLoopAddTimer(runLoop, timer, kCFRunLoopCommonModes);
-    [self addObserverForMode:kCFRunLoopCommonModes];
+    CFRunLoopAddTimer(runLoop, timer, kCFRunLoopDefaultMode);
+//    [self addObserverForMode:kCFRunLoopDefaultMode runLoop:^{
+//        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 10, YES);
+//        NSLog(@"Runloop finish");
+//    }];
+    [self addObserverForMode:kCFRunLoopDefaultMode];
 }
 
 - (void)startRunloopSourceCustomMode
@@ -97,7 +134,7 @@ static NSString *kDMCustomMode = @"kDMCustomMode";
     [self addObserverForMode:string runLoop:^{
         //10s后退出runloop YES执行完source后直接返回 NO 等到10s后退出runloop
         CFRunLoopRunInMode(string, 10, NO);
-    } after:^{
+        NSLog(@"Runloop finish");
         //防止野指针的产生
         weakSelf.thread = nil;
     }];
@@ -105,10 +142,13 @@ static NSString *kDMCustomMode = @"kDMCustomMode";
 - (void)startRunloopTimerCustomMode
 {
     CFRunLoopRef runLoop = CFRunLoopGetCurrent();
-    CFRunLoopTimerContext context = {0, NULL, NULL, NULL, NULL};
-    //每隔5s被唤醒一次
-    CFRunLoopTimerRef timer = CFRunLoopTimerCreate(kCFAllocatorDefault, 0.1, 5, 0, 0,
-                                                   &myCFTimerCallback, &context);
+//    CFRunLoopTimerContext context = {0, NULL, NULL, NULL, NULL};
+//    //每隔5s被唤醒一次
+//    CFRunLoopTimerRef timer = CFRunLoopTimerCreate(kCFAllocatorDefault, 0.1, 5, 0, 0,
+//                                                   &myCFTimerCallback, &context);
+    CFRunLoopTimerRef timer = CFRunLoopTimerCreateWithHandler(kCFAllocatorDefault, 0.1, 5, 0, 0, ^(CFRunLoopTimerRef timer) {
+        NSLog(@"timer====%@",[NSThread currentThread]);
+    });
     
 //    CFStringRef string = CFStringCreateWithFormat(NULL, NULL, CFSTR("kDMCustomMode"));
     NSString *str = kDMCustomMode;
@@ -122,14 +162,32 @@ static NSString *kDMCustomMode = @"kDMCustomMode";
     [self addObserverForMode:mode runLoop:^{
         NSLog(@"runloop call");
         CFRunLoopRun(); //默认DefaultMode下运行
-    } after:^{
-        NSLog(@"after call");
+        NSLog(@"Runloop finish");
     }];
 }
 
-- (void)addObserverForMode:(CFRunLoopMode)mode runLoop:(void(^)(void))runBlock after:(void(^)(void))afterBlock
+- (void)addObserverForMode:(CFRunLoopMode)mode runLoop:(void(^)(void))runBlock
 {
     // 给runloop添加一个状态监听者
+//    CFRunLoopRef runLoop = CFRunLoopGetCurrent();
+//    CFOptionFlags activities = (kCFRunLoopBeforeWaiting | // before the run loop starts sleeping
+//                                kCFRunLoopExit);          // before exiting a runloop run
+//    CFRunLoopObserverContext context = {
+//        0,           // version
+//        (__bridge void *)transactionGroup,  // info
+//        &CFRetain,   // retain
+//        &CFRelease,  // release
+//        NULL         // copyDescription
+//    };
+//
+//    CFRunLoopObserverRef observer = CFRunLoopObserverCreate(NULL,        // allocator
+//                                       activities,  // activities
+//                                       YES,         // repeats
+//                                       INT_MAX,     // order after CA transaction commits
+//                                       &_transactionGroupRunLoopObserverCallback,  // callback
+//                                       &context);   // context
+//    CFRunLoopAddObserver(runLoop, observer, kCFRunLoopCommonModes);
+    
     CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(kCFAllocatorDefault, kCFRunLoopAllActivities, YES, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity activity) {
         NSString *reference = @"";
         if (activity == kCFRunLoopEntry) {
@@ -146,17 +204,12 @@ static NSString *kDMCustomMode = @"kDMCustomMode";
             NSLog(@"kCFRunLoopExit = %@",reference);
         }
     });
+    
     CFRunLoopAddObserver(CFRunLoopGetCurrent(), observer, mode);
+    CFRelease(observer);
     
     if (runBlock) {
         runBlock();
-    }
-    
-    NSLog(@"Runloop finish");
-    CFRelease(observer);
-    
-    if (afterBlock) {
-        afterBlock();
     }
 }
 
@@ -167,7 +220,7 @@ static void myCFTimerCallback(CFRunLoopTimerRef timer, void *info)
 
 static void myCFSourceCallback(void *info)
 {
-    NSLog(@"timer====%@",[NSThread currentThread]);
+    NSLog(@"myCFSourceCallback====%@",[NSThread currentThread]);
 }
 
 
