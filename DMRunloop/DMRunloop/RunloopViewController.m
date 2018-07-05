@@ -35,26 +35,26 @@ static NSString *kDMCustomMode = @"kDMCustomMode";
 {
     NSLog(@"%s",__func__);
     [super touchesBegan:touches withEvent:event];
-    [self performSelector:@selector(threadCall) onThread:self.thread withObject:nil waitUntilDone:NO];
+//    [self performSelector:@selector(threadCall) onThread:self.thread withObject:nil waitUntilDone:NO];
 //    [self performSelector:@selector(threadCall) withObject:nil afterDelay:0 inModes:@[UITrackingRunLoopMode]];
 //    [self performSelector:@selector(threadCall) withObject:nil afterDelay:0 inModes:@[@"kDMCustomMode"]];
 //    [self performSelector:@selector(threadCall) withObject:nil afterDelay:0 inModes:@[NSDefaultRunLoopMode]];
     
     //waitUntilDone YES 时在thread被释放后 也通用要求一直等到threadCall 执行完毕，这样就会导致阻塞
-//    [self performSelector:@selector(threadCall) onThread:self.thread withObject:nil waitUntilDone:NO modes:@[kDMCustomMode]];
+    [self performSelector:@selector(threadCall) onThread:self.thread withObject:nil waitUntilDone:NO modes:@[kDMCustomMode]];
     
 }
 
 - (void)test1
 {
-    self.thread = [[DMThread alloc] initWithTarget:self selector:@selector(startRunloopTimer) object:nil];
+    self.thread = [[DMThread alloc] initWithTarget:self selector:@selector(startRunloopSourceCustomMode) object:nil];
     [self.thread start];
 }
 
 - (void)threadCall
 {
     NSLog(@"call in %@==%@===%p", [NSThread currentThread],self.thread,self.thread);
-//    [self triggerSource];
+    [self triggerSource];
 }
 
 //用于手动触发source0
@@ -125,15 +125,16 @@ static NSString *kDMCustomMode = @"kDMCustomMode";
 {
     CFRunLoopRef runLoop = CFRunLoopGetCurrent();
     CFRunLoopSourceContext context = {0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &myCFSourceCallback};
-    CFRunLoopSourceRef source = CFRunLoopSourceCreate(kCFAllocatorDefault, 0, &context);
+//    CFRunLoopSourceRef source = CFRunLoopSourceCreate(kCFAllocatorDefault, 0, &context);
+    sourceRef = CFRunLoopSourceCreate(kCFAllocatorDefault, 0, &context);
     NSString *str = kDMCustomMode;
     CFStringRef string = (__bridge CFStringRef)str;
     // 给runloop添加一个自定义source
-    CFRunLoopAddSource(runLoop, source, string);
+    CFRunLoopAddSource(runLoop, sourceRef, string);
     __weak typeof(self) weakSelf = self;
     [self addObserverForMode:string runLoop:^{
         //10s后退出runloop YES执行完source后直接返回 NO 等到10s后退出runloop
-        CFRunLoopRunInMode(string, 10, NO);
+        CFRunLoopRunInMode(string, 10, YES);
         NSLog(@"Runloop finish");
         //防止野指针的产生
         weakSelf.thread = nil;
@@ -198,6 +199,7 @@ static NSString *kDMCustomMode = @"kDMCustomMode";
             NSLog(@"kCFRunLoopBeforeSources = %@",reference);
         } else if(activity == kCFRunLoopBeforeWaiting){
             NSLog(@"kCFRunLoopBeforeWaiting = %@",reference);
+            //
         } else if(activity == kCFRunLoopAfterWaiting){
             NSLog(@"kCFRunLoopAfterWaiting = %@",reference);
         } else {
